@@ -14,6 +14,7 @@ public class Test {
 
     public static void test() {
         LinkedList list = new LinkedList();
+
         list.add(0, 1);
         list.add(1, 2);
         list.add(2, 3);
