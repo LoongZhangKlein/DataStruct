@@ -44,21 +44,31 @@ public class SLinkedOrder {
         }
 
     }
-    public SLinkedOrder reverse(){
-        NodeOrder reverseNode=new NodeOrder(null,null);
-        NodeOrder temp=header.next;
-        if (temp==null){
-            throw new RuntimeException("连表为空");
+
+    /**
+     * 翻转链表
+     * @return
+     */
+    public void reverse(){
+        // 当链表为空或者链表只有一个元素时不需要翻转
+        if (header.next==null || header.next.next==null){
+            return;
         }
-        while (true){
-            if (temp==null){
-                break;
-            }
-            temp.next=reverseNode.next;
-            reverseNode.next=temp;
-            temp=temp.next;
+        // 指针指向头元素
+        NodeOrder current=header.next;
+        NodeOrder next=null;
+        // 主要操作即 把当前链表的每个元素摘除 放到 新链表上
+        NodeOrder reverseNode = new NodeOrder(null,null);
+        while (current!=null){
+            // 保存下边继续操作的节点
+            next=current.next;
+            // 将翻转节点付给 当前节点的下一个 目的是为了实现节点的翻转
+            current.next=reverseNode.next;
+            reverseNode.next=current;
+            current=next;
         }
-        return new SLinkedOrder(reverseNode);
+        header.next=reverseNode.next;
+
     }
     /**
      * 求单链表中倒数第几个节点

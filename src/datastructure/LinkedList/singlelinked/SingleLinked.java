@@ -5,8 +5,6 @@ import java.util.Stack;
 
 public class SingleLinked {
     private Node head;
-    private Node pop;
-
     public SingleLinked() {
         this.head = new Node(null, null);
     }
@@ -71,15 +69,40 @@ public class SingleLinked {
 
     }
 
+    /**
+     *单链表的翻转
+     */
     public void reverse() {
+        // 链表为空或者当前链表只有一个元素 不用翻转
         if (head.next == null || head.next.next == null) {
             return;
         }
+        // 标记头指针
         Node cur=head.next;
+        // 设置辅助指针
         Node next=null;
+        //
         Node reverseHead=new Node(null,null);
         while (cur!=null){
+            // 标记出下边要执行的节点
             next=cur.next;
+            /**
+             * 刚开始以为反转操作是在reverseHead这条新建链表中其实是在原先的链表上
+             * reverseHead这条新建链表是辅助链表  进入误区了
+             *
+             * 以翻转1.2.3为例
+             * 当第一次执行时,翻转链表的next为空,cur.next为2,执行完cur.next=reverseHead.next后 cur链表变为1,
+             * 执行reverseHead.next=cur;后,reverseHead链表为1继续向下执行
+             * cur=next; 这时cur链表为2->3
+             * 在执行next=cur.next; 这是next为3
+             *  reverseHead.next为1,cur.next为3,这是执行cur.next=reverseHead.next;
+             *  cur链表为2->1;执行reverseHead.next=cur后,reverseHead链表为2->1
+             *  cur=next; 此时cur链表只剩3
+             *  cur.next=null, next=cur.next后 next为null
+             *  reverseHead.next为2(->1),执行cur.next=reverseHead.next;后cur链表变为3->2->1
+             *   reverseHead.next=cur;后 reversehead链表为3->2->1
+             *   cur=next(此时next为null)循环终止
+             */
             cur.next=reverseHead.next;
             reverseHead.next=cur;
             cur=next;

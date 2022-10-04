@@ -16,9 +16,9 @@ public class Test {
         sLinkedOrder.add(7,"它");
         sLinkedOrder.add(9,"闼");
         sLinkedOrder.display();
-        SLinkedOrder reverse =sLinkedOrder.reverse();
+        sLinkedOrder.reverse();
         System.out.println("=============");
-        reverse.display();
+        sLinkedOrder.display();
     }
     static void singleLinked(){
         SingleLinked singleLinked = new SingleLinked();
