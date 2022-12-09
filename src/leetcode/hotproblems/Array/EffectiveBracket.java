@@ -16,64 +16,45 @@ public class EffectiveBracket {
      * 链接：https://leetcode.cn/problems/valid-parentheses
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
+    /**
+     * 该实现思路加上左括号的闭合顺序即可
+     * @param s
+     * @return
+     */
+
     public static boolean isValid(String s) {
-        List<Character> list = new ArrayList();
-        HashSet hashSet = new HashSet();
-        hashSet.add('(');
-        hashSet.add('[');
-        hashSet.add('{');
         char[] chars = s.toCharArray();
+        Stack leftBracketStack = new Stack();
+        HashMap<String, String> map = new HashMap<>();
+        map.put("(",")");
+        map.put("[","]");
+        map.put("{","}");
+        Stack<String> rightBracketStack = new Stack<>();
+        Set<String> strings = map.keySet();
         for (int i = 0; i < chars.length; i++) {
-            if (hashSet.contains(chars[i])) {
-                list.add(chars[i]);
+            String str=String.valueOf(chars[i]);
+            if (strings.contains(str)) {
+                leftBracketStack.add(str);
             } else {
-                if (')'==(chars[i])){
-                    int i1 = list.indexOf('(');
-                    if (list.size()>1){
-                        if (list.get(list.size()-1)!='(' || list.indexOf('(')==-1  ){
-                            return false;
-                        }else{
-                            list.remove(list.size()-1);
-                        }
-                    }
-
-
-                }
-                if (']'==(chars[i])){
-                    if (list.size()>1){
-                        if (list.get(list.size()-1)!='[' || list.indexOf('[')==-1  ){
-                            return false;
-                        }else{
-                            list.remove(list.size()-1);
-                        }
-                    }
-
-
-                }
-                if ('}'==(chars[i])){
-                    if(list.size()>1){
-                        if (list.get(list.size()-1)!='{' || list.indexOf('{')==-1  ){
-                            return false;
-                        }else{
-                            list.remove(list.size()-1);
-                        }
-                    }
-
-
-                }
+                rightBracketStack.add(str);
             }
         }
-        if (list.size()==0){
-            return true;
-        }else{
+        if (leftBracketStack.size() != rightBracketStack.size()) {
             return false;
         }
-
+        while (!leftBracketStack.isEmpty()) {
+            String pop = (String) leftBracketStack.pop();
+            if (rightBracketStack.contains(map.get(pop))){
+                rightBracketStack.remove(map.get(pop));
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static void main(String[] args) {
-
-        String s = "()";
+        String s = "([)]";
         boolean valid = isValid(s);
         System.out.println(valid);
     }
