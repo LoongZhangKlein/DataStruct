@@ -1,4 +1,4 @@
-package designmode.abstractfactoryfodel;
+package designmode.abstractfactorymodel;
 
 /**
  * 抽象工厂简洁版本

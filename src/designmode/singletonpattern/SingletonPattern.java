@@ -62,11 +62,16 @@ class SingletonCheck {
     }
 
     public static SingletonCheck getSingleton() {
-        // 第一次创建 等于null 相对是小概率事件
+        /**
+         * 第一次一次进来两个线程,
+         */
         if (singleton == null) {
             // 防止第一次创建时多线程问题
             synchronized (SingletonCheck.class) {
-                // todo 里边在判断为null是为什么
+                /**
+                 * 此处再次判断为null原因,例如当A B两个线程进入第一重判断后,A线程加锁,判空new 之后,释放锁
+                 * 这时B线程进入就重新new了一个对象,不符合单例模式
+                 */
                 if (singleton == null) {
                     singleton = new SingletonCheck();
                 }
