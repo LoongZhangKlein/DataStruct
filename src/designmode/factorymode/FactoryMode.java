@@ -1,5 +1,8 @@
 package designmode.factorymode;
 
+import java.util.HashMap;
+import java.util.Map;
+
 interface Shape {
     void draw();
 }
@@ -25,18 +28,34 @@ class Square implements Shape {
 /**
  * 该类是工厂类
  */
+//class ShapeFactory {
+//    public Shape create(String str) {
+//    if (str.equals("C")){
+//        return new Circle();
+//    }else if (str.equals("S")){
+//        return new Square();
+//    }else {
+//        return null;
+//    }
+//    }
+//}
+
+/**
+ * 优化后的写法
+ *
+ */
 class ShapeFactory {
+    Map<String,Shape> stringShapeMap= new HashMap<String,Shape>();
     public Shape create(String str) {
-    if (str.equals("C")){
-        return new Circle();
-    }else if (str.equals("S")){
-        return new Square();
-    }else {
-        return null;
-    }
+        if (str.equals("C")){
+            return new Circle();
+        }else if (str.equals("S")){
+            return new Square();
+        }else {
+            return null;
+        }
     }
 }
-
 /**
  * 该类用来使用工厂
  */
