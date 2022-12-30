@@ -3,8 +3,8 @@ package designmode.proxypattern;
 /**
  * @author loongzhang
  * @Description DOING
- * @date 2022-12-16-17:31
+ * @date 2022-12-20-17:25
  */
-public interface Images {
-    void display();
+public interface SaveMoney {
+    void saveMoney();
 }
