@@ -25,79 +25,82 @@ public class EffectiveBracket {
      * @return
      */
 
+    /**
+     * 实现方法一
+     */
+    private static final Map<Character, Character> bracketMap = new HashMap<Character, Character>(3) {{
+        put('(', ')');
+        put('{', '}');
+        put('[', ']');
+    }};
+
     public static boolean isValid(String s) {
-        // 接收输入符号
+        Stack<Character> charactersStack = new Stack<>();
         char[] chars = s.toCharArray();
-        // 创建左符号栈
-        Stack<String> leftBracketStack = new Stack();
-        // 创建右符号栈
-        Stack<String> rightBracketStack = new Stack<>();
-        // 所有可匹配的符号
-        HashMap<String, String> leftRightBracketMap = new HashMap<>(3);
-        leftRightBracketMap.put("(", ")");
-        leftRightBracketMap.put("[", "]");
-        leftRightBracketMap.put("{", "}");
-        Set<String> leftBracketSet = leftRightBracketMap.keySet();
-        for (int i = 0; i < chars.length; i++) {
-            String str = String.valueOf(chars[i]);
-            // 左括号必须以相应的顺序闭合
-            // 若为左括号进入左括号栈
-            // 进入后判断右括号栈是否为空,为空直接返回false,不为空出栈,若不匹配直接返回false
-            if (!leftBracketStack.isEmpty()){
-                if (!str.equals(leftRightBracketMap.get(leftBracketStack.pop()))){
-                    return false;
-                }else{
-                    continue;
-                }
-            }
-            if (leftBracketSet.contains(str)) {
-                // 若是左符号,左符号栈若为空直接入栈
-                if (leftBracketStack.isEmpty()){
-                    leftBracketStack.add(str);
-                    continue;
-                }
-                if (leftBracketStack.contains(str)){
-                    return false;
-                }
-                leftBracketStack.add(str);
-                // 做符号栈不为空,且当次入栈符号在符号栈中存在直接返回 false
-                // 符号栈不为空,且当次入栈符号在符号栈中不存在直接入栈
-
-
-                if (!leftBracketStack.isEmpty() && !rightBracketStack.isEmpty()){
-                    if (!(leftRightBracketMap.get(leftBracketStack.pop()).equals(rightBracketStack.pop()))){
-                        return false;
-                    }
-                }
-                // 左括号进入左符号栈
-                leftBracketStack.add(str);
-
-
-            } else {
-                //有括号进入右括号栈
-                rightBracketStack.add(str);
-            }
-        }
-        // 若左右符号栈个数不一致直接返回错误
-        if (leftBracketStack.size() != rightBracketStack.size()) {
+        // 不为偶数个一定不匹配
+        if (chars.length % 2 != 0 || s == null) {
             return false;
         }
-        // 个数一致
-        while (!leftBracketStack.isEmpty()){
-            String leftBracket = leftBracketStack.pop();
-            // 如果右符号栈存在配对符号 出栈
-            if (rightBracketStack.contains(leftRightBracketMap.get(leftBracket))){
-                rightBracketStack.remove(leftRightBracketMap.get(leftBracket));
-            }else{
-                return false;
+        for (int i = 0; i < chars.length; i++) {
+            // 左符号入栈
+            if (bracketMap.containsKey(chars[i])) {
+                charactersStack.add(chars[i]);
+            } else {
+                // 遇到右符号 查找栈内左符号
+                if (charactersStack.isEmpty()) {
+                    return false;
+                }
+                if (!bracketMap.get(charactersStack.pop()).equals(chars[i])) {
+                    return false;
+                }
             }
+        }
+        if (!charactersStack.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    private static final Map<Character, Character> bracketMapTwo = new HashMap<Character, Character>(4) {{
+       // put('?', '?');
+        put('(', ')');
+        put('{', '}');
+        put('[', ']');
+    }};
+
+    /**
+     * 实现方法二
+     *
+     * @param s
+     * @return
+     */
+    public static boolean isValidTwo(String s) {
+        // 若长度为0 且第一字符串不存在
+        if (s.length() > 0 && !bracketMapTwo.containsKey(s.toCharArray()[0])) {
+            return false;
+        }
+        Stack<Character> charactersStack = new Stack<>();
+        charactersStack.add('?');
+        for (Character character : s.toCharArray()) {
+            // 若map中存在则往占中添加
+            if (bracketMapTwo.containsKey(character)) {
+                charactersStack.add(character);
+            } else {
+                if (!character.equals(bracketMapTwo.get(charactersStack.pop()))) {
+                    return false;
+                }
+            }
+            // 符号map不存在出栈相等则ture,不相等则false
+        }
+        if (charactersStack.size()>=1){
+            return false;
         }
         return true;
     }
 
     public static void main(String[] args) {
-        String s = "{[]}";
-        boolean valid = isValid(s);
+        String s = "(){}}{";
+        boolean valid = isValidTwo(s);
         System.out.println(valid);
     }
 }
